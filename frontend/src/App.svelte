@@ -8,4 +8,4 @@ onMount(() => {
 })
 </script>
 
-<h1>Test</h1>
+<h1 class="text-center">Test</h1>
