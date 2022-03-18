@@ -75,23 +75,44 @@ def logout_user(request: Request, should_redirect: str = ""):
 @router.get("/applications")
 def get_applications(user: User = Depends(use_user())):
     applications_mdb = list(db[APPLICATION_COLLECTION_NAME].find({"owner_id": user.id}).sort("created_at", -1))
-    print(applications_mdb)
-    # applications = [Application(**app) for app in applications_mdb]
+    applications = [Application(**app, id=app.get("_id")) for app in applications_mdb]
 
-    # return {"applications": [ApplicationResponse(**app.dict()) for app in applications]}
-    return {}
+    return {"applications": [ApplicationResponse(**app.dict()) for app in applications]}
 
 
 @router.get("/applications/{application_id}")
 def get_application(application_id: str):
-    app = Application.get(application_id)
+    app, owner = Application.get(application_id)
     if app is None:
         raise HTTPError("Application not found", "Application not found", 404)
-    return {"application": ApplicationResponse(**app.dict())}
+    return {"application": ApplicationResponse(**app.dict(), owner=UserResponse(**owner.dict()))}
 
 
 @router.post("/applications")
 def create_application(body: ApplicationRequest, user: User = Depends(use_user())):
     app, secret = body.create_app(user)
     app.save()
+    return {"application": ApplicationResponse(**app.dict(), owner=user), "secret": secret}
+
+
+@router.put("/applications/{application_id}")
+def create_application(application_id: str, body: ApplicationRequest, user: User = Depends(use_user())):
+    app = Application.get(application_id)[0]
+    if app is None:
+        raise HTTPError("Application not found", "Application not found", 404)
+    if app.owner_id != user.id:
+        raise HTTPError("Not authorized", "You are not authorized to update this application", 403)
+    app.name = body.name
+    app.save()
+    return {"application": ApplicationResponse(**app.dict(), owner=user)}
+
+
+@router.put("/applications/{application_id}/secret")
+def rotate_application_secret(application_id: str, user: User = Depends(use_user())):
+    app = Application.get(application_id)[0]
+    if app is None:
+        raise HTTPError("Application not found", "Application not found", 404)
+    if app.owner_id != user.id:
+        raise HTTPError("Not authorized", "You are not authorized to update this application", 403)
+    secret = app.rotate_secret()
     return {"application": ApplicationResponse(**app.dict(), owner=user), "secret": secret}

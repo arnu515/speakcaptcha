@@ -3,7 +3,7 @@ Captcha Application for using on other websites
 """
 
 from . import Model, db
-from .user import User
+from .user import User, UserResponse
 
 import math
 import time
@@ -26,8 +26,8 @@ class Application(Model):
         item = db[COLLECTION_NAME].find_one({"_id": _id})
         if not item:
             return None
-        owner = User(**db["users"].find_one({"_id": item["owner_id"]}))
-        return cls(**item, id=item["id"], owner=owner)
+        owner = db["users"].find_one({"_id": item["owner_id"]})
+        return cls(**item, id=item["_id"]), User(**owner, id=owner["_id"])
 
     def rotate_secret(self) -> str:
         secret = nanoid.generate(size=64)
@@ -59,4 +59,4 @@ class ApplicationResponse(BaseModel):
     name: str
     secret: str
     created_at: int
-    owner: User
+    owner: UserResponse | None
