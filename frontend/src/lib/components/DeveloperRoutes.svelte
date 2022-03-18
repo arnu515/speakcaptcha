@@ -1,6 +1,7 @@
 <script lang="ts">
-import DevelopersAuth from "$lib/pages/developers/auth.svelte"
 import Developers from "$lib/pages/developers/index.svelte"
+import DevelopersAuth from "$lib/pages/developers/auth.svelte"
+import DevelopersNew from "$lib/pages/developers/new.svelte"
 import user from "$lib/stores/user"
 import { onMount } from "svelte"
 import { Route } from "svelte-navigator"
@@ -21,6 +22,9 @@ onMount(async () => {
 	{#if $user}
 		<Route path="/developers">
 			<Developers />
+		</Route>
+		<Route path="/developers/new">
+			<DevelopersNew />
 		</Route>
 	{:else}
 		<Route path="/developers/*">
