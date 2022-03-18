@@ -46,5 +46,10 @@ async function createApp() {
 		<button
 			class="bg-blue-500 hover:bg-blue-600 text-white hover:no-underline px-4 py-2 rounded"
 			>Create application</button>
+		<button
+			type="button"
+			on:click={() => navigate(-1)}
+			class="bg-gray-500 hover:bg-gray-600 text-white hover:no-underline px-4 py-2 rounded ml-2"
+			>Go back</button>
 	</p>
 </form>
