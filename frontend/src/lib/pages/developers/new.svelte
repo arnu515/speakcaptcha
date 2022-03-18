@@ -15,7 +15,7 @@ async function createApp() {
 	})
 
 	if (status === 200) {
-		navigate(`/developers/applications/${data.application.id}`, {
+		navigate(`/developers/${data.application.id}`, {
 			state: { secret: data.secret }
 		})
 	} else {
