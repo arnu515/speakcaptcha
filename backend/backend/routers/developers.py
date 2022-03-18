@@ -116,3 +116,14 @@ def rotate_application_secret(application_id: str, user: User = Depends(use_user
         raise HTTPError("Not authorized", "You are not authorized to update this application", 403)
     secret = app.rotate_secret()
     return {"application": ApplicationResponse(**app.dict(), owner=user), "secret": secret}
+
+
+@router.delete("/applications/{application_id}")
+def delete_application(application_id: str, user: User = Depends(use_user())):
+    app = Application.get(application_id)[0]
+    if app is None:
+        raise HTTPError("Application not found", "Application not found", 404)
+    if app.owner_id != user.id:
+        raise HTTPError("Not authorized", "You are not authorized to update this application", 403)
+    app.delete()
+    return {"application": ApplicationResponse(**app.dict(), owner=user)}

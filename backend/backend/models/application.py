@@ -25,7 +25,7 @@ class Application(Model):
     def get(cls, _id: str):
         item = db[COLLECTION_NAME].find_one({"_id": _id})
         if not item:
-            return None
+            return None, None
         owner = db["users"].find_one({"_id": item["owner_id"]})
         return cls(**item, id=item["_id"]), User(**owner, id=owner["_id"])
 
