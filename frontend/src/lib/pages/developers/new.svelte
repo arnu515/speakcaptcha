@@ -1,10 +1,11 @@
 <script lang="ts">
 import axios from "$lib/axios"
 import { parseFastApiError } from "$lib/util"
-import { useNavigate } from "svelte-navigator"
+import { useNavigate, useFocus } from "svelte-navigator"
 
 let enteredName = ""
-let navigate = useNavigate()
+const navigate = useNavigate()
+const focus = useFocus()
 
 async function createApp() {
 	if (!enteredName.trim()) return alert("Please enter a name")
@@ -37,6 +38,7 @@ async function createApp() {
 	<input
 		type="text"
 		id="name"
+		use:focus
 		class="block w-[80%] bg-white border border-gray-400 rounded px-2 py-1 outline-none focus:border-black"
 		placeholder="Enter the name of your application."
 		bind:value={enteredName} />
