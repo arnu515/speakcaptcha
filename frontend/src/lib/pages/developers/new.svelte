@@ -15,7 +15,9 @@ async function createApp() {
 	})
 
 	if (status === 200) {
-		navigate(`/developers/applications/${data.application.id}`)
+		navigate(`/developers/applications/${data.application.id}`, {
+			state: { secret: data.secret }
+		})
 	} else {
 		alert(parseFastApiError(data))
 		console.error("Error while creating application:", { data, status })
