@@ -7,6 +7,7 @@ import { onMount } from "svelte"
 import { Route } from "svelte-navigator"
 import axios from "$lib/axios"
 import DevelopersSlug from "$lib/pages/developers/[slug].svelte"
+import Loading from "./Loading.svelte"
 
 let loading = true
 
@@ -37,6 +38,8 @@ onMount(async () => {
 	{/if}
 {:else}
 	<Route path="/developers/*">
-		<h1>Loading...</h1>
+		<div class="mt-12">
+			<Loading center width={64} height={64} />
+		</div>
 	</Route>
 {/if}
