@@ -6,6 +6,7 @@ import user from "$lib/stores/user"
 import { onMount } from "svelte"
 import { Route } from "svelte-navigator"
 import axios from "$lib/axios"
+import DevelopersSlug from "$lib/pages/developers/[slug].svelte"
 
 let loading = true
 
@@ -25,6 +26,9 @@ onMount(async () => {
 		</Route>
 		<Route path="/developers/new">
 			<DevelopersNew />
+		</Route>
+		<Route path="/developers/:slug">
+			<DevelopersSlug />
 		</Route>
 	{:else}
 		<Route path="/developers/*">
