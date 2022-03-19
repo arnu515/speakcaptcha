@@ -2,9 +2,10 @@
 import Loading from "$lib/components/Loading.svelte"
 import applications, { Application } from "$lib/stores/applications"
 import { parseFastApiError } from "$lib/util"
-import axios from "axios"
+import axios from "$lib/axios"
 import { onMount } from "svelte"
 import { useParams, useNavigate, Link, useLocation } from "svelte-navigator"
+import { error, success } from "$lib/toast"
 
 const params = useParams()
 const navigate = useNavigate()
@@ -31,16 +32,17 @@ onMount(fetchApp)
 let enteredName = ""
 async function updateApp() {
 	if (!app) return
-	if (!enteredName.trim()) return alert("Please enter a name")
+	if (!enteredName.trim()) return error("Please enter a name")
 
 	const { data, status } = await axios.put("/api/developers/applications/" + app.id, {
 		name: enteredName
 	})
 
 	if (status === 200) {
+		success("Application updated!")
 		await fetchApp()
 	} else {
-		alert(parseFastApiError(data))
+		error(parseFastApiError(data))
 		console.error("Error while updating application:", { data, status })
 	}
 }
@@ -55,8 +57,9 @@ async function regenSecret() {
 	if (status === 200) {
 		await fetchApp()
 		secret = data.secret
+		success("Generated a secret. Be sure to copy it, it won't be shown again.")
 	} else {
-		alert(parseFastApiError(data))
+		error(parseFastApiError(data))
 		console.error("Error while generating new secret:", { data, status })
 	}
 }
@@ -74,8 +77,9 @@ async function deleteApp() {
 
 	if (status === 200) {
 		navigate("/developers")
+		success("Deleted application!")
 	} else {
-		alert(parseFastApiError(data))
+		error(parseFastApiError(data))
 		console.error("Error while generating new secret:", { data, status })
 	}
 }

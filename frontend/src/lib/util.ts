@@ -5,7 +5,9 @@ export function parseFastApiError(data: Record<string, any>): string {
 	if (Array.isArray(data.detail)) {
 		let msg = ""
 		for (const item of data.detail) {
-			msg += `- ${(item.loc || ["field"]).join(".")}: ${item.msg}\n`
+			msg += `<strong>${(item.loc || ["field"]).join(".")}:</strong> <code>${
+				item.msg
+			}</code><br/>`
 		}
 		return (
 			msg ||

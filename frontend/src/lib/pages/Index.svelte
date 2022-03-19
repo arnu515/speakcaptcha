@@ -15,6 +15,5 @@ import { Link } from "svelte-navigator"
 	<Link
 		to="/developers"
 		class="bg-blue-500 hover:bg-blue-600 text-white hover:no-underline px-4 py-2 rounded"
-		>Get started</Link
-	>
+		>Get started</Link>
 </p>

@@ -1,5 +1,6 @@
 <script lang="ts">
 import axios from "$lib/axios"
+import { error, success } from "$lib/toast"
 import { parseFastApiError } from "$lib/util"
 import { useNavigate, useFocus } from "svelte-navigator"
 
@@ -8,7 +9,7 @@ const navigate = useNavigate()
 const focus = useFocus()
 
 async function createApp() {
-	if (!enteredName.trim()) return alert("Please enter a name")
+	if (!enteredName.trim()) return error("Please enter a name")
 
 	const { data, status } = await axios.post("/api/developers/applications", {
 		name: enteredName
@@ -18,8 +19,9 @@ async function createApp() {
 		navigate(`/developers/${data.application.id}`, {
 			state: { secret: data.secret }
 		})
+		success("Application created!")
 	} else {
-		alert(parseFastApiError(data))
+		error(parseFastApiError(data))
 		console.error("Error while creating application:", { data, status })
 	}
 }

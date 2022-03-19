@@ -4,6 +4,7 @@ import ApplicationCard from "$lib/components/ApplicationCard.svelte"
 import Loading from "$lib/components/Loading.svelte"
 import applications from "$lib/stores/applications"
 import user from "$lib/stores/user"
+import { error } from "$lib/toast"
 import { onMount } from "svelte"
 import { Link } from "svelte-navigator"
 
@@ -13,7 +14,7 @@ onMount(async () => {
 	if (status === 200) $applications = data.applications
 	else if (status === 401) $user = null
 	else {
-		alert(
+		error(
 			"An error occured while trying to fetch your applications. You can press F12 to look at the error."
 		)
 		console.error("Error while fetching applications:", { data, status })
