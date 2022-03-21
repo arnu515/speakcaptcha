@@ -7,13 +7,22 @@
     "tailwindcss": "tailwindcss"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
     "autoprefixer": "^10.4.4",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babelify": "^10.0.0",
     "cssnano": "^5.1.4",
     "gulp": "^4.0.2",
+    "gulp-browserify": "^0.5.1",
     "gulp-cli": "^2.3.0",
     "gulp-postcss": "^9.0.1",
+    "gulp-uglify": "^3.0.2",
     "postcss": "^8.4.12",
     "rimraf": "^3.0.2",
     "tailwindcss": "^3.0.23"
+  },
+  "dependencies": {
+    "core-js": "^3.21.1"
   }
 }

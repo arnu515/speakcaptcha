@@ -1,6 +1,8 @@
-const { series, src, dest, watch } = require("gulp")
+const { series, parallel, src, dest, watch } = require("gulp")
 const rmrf = require("rimraf")
 const postcss = require("gulp-postcss")
+const browserify = require("gulp-browserify")
+const uglify = require("gulp-uglify")
 
 function clean(cb) {
   rmrf("backend/static/*", cb)
@@ -12,9 +14,16 @@ function css() {
     .pipe(dest("backend/static"))
 }
 
+function js() {
+  return src("backend/assets/**/*.js")
+    .pipe(browserify({ transform: ["babelify"] }))
+    .pipe(uglify())
+    .pipe(dest("backend/static"))
+}
+
 const task = series(
   clean,
-  css
+  parallel(css, js)
 )
 
 function dev() {
