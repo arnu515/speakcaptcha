@@ -1,0 +1,38 @@
+.speakcaptcha-container {
+  @apply bg-white m-1;
+}
+
+.speakcaptcha-box {
+  @apply bg-gray-100 shadow-md rounded-lg border-2 border-gray-400;
+}
+
+.speakcaptcha-image {
+  @apply flex gap-2 m-1;
+
+  img {
+    @apply w-[216px] h-[64px] object-cover border border-gray-300 rounded;
+  }
+
+  .speakcaptcha-button {
+    @apply bg-white border border-gray-300 rounded p-2 h-[64px];
+  }
+}
+
+.speakcaptcha-body {
+  @apply mt-2;
+
+  .speakcaptcha-heading {
+    @apply text-3xl font-bold m-2;
+  }
+  .speakcaptcha-text {
+    @apply text-sm m-2 text-gray-800;
+  }
+}
+
+.speakcaptcha-footer {
+  @apply flex items-center justify-between mx-2 mb-1 text-sm text-gray-500;
+
+  a {
+    @apply transition-colors hover:underline hover:text-black;
+  }
+}

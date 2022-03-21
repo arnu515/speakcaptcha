@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <link rel="stylesheet" href="{{url_for('static', path='css/tailwind.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', path='css/captcha.css')}}">
+  <title>Please solve this SpeakCaptcha.</title>
+  <script>
+    // expose jinja template variables to javascript
+    var captcha_id = '{{captcha_id}}';
+  </script>
+</head>
+<body>
+  <div class="speakcaptcha-container">
+    <div class="speakcaptcha-box">
+      <div class="speakcaptcha-image">
+        <img src="data:image/png;base64,{{ captcha }}" alt="An image showing your SpeakCaptcha challenge." />
+        <button class="speakcaptcha-button" title="Turn on your microphone" aria-label="Turn on your microphone">
+          <svg width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="9" y="2" width="6" height="12" rx="3" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5 10V11C5 14.866 8.13401 18 12 18V18V18C15.866 18 19 14.866 19 11V10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 18V22M12 22H9M12 22H15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="speakcaptcha-button" title="New captcha" aria-label="New captcha" onclick="window['{{ captcha_id }}'].newCaptcha()">
+          <svg width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21.8883 13.5C21.1645 18.3113 17.013 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C16.1006 2 19.6248 4.46819 21.1679 8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M17 8H21.4C21.7314 8 22 7.73137 22 7.4V3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="speakcaptcha-body">
+        <p class="speakcaptcha-text">Please click the microphone button and speak out the numbers (in English) that you see in the above image.</p>
+      </div>
+      <div class="speakcaptcha-footer">
+        <a href="https://speakcaptcha.gq/accessibility">Accessibility</a>
+        <a href="https://speakcaptcha.gq"><strong>Speak</strong>Captcha</a>
+      </div>
+    </div>
+  </div>
+  <script src="{{url_for('static', path='js/captcha.js')}}"></script>
+</body>
+</html>
