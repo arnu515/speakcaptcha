@@ -1,4 +1,5 @@
 from fastapi.templating import Jinja2Templates
 from os import path
 
-jinja = Jinja2Templates(directory=path.join(path.realpath(__file__), "../templates"))
+template_path = path.abspath(path.join(path.dirname(__file__), "../templates"))
+jinja = Jinja2Templates(directory=template_path)
