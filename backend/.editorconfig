@@ -151,3 +151,6 @@ ij_yaml_spaces_within_brackets = true
 
 [{*.js,*.ts}]
 indent_size = 2
+
+[*.css]
+indent_size = 2
