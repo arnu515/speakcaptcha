@@ -14,7 +14,7 @@
   }
 
   .speakcaptcha-button {
-    @apply bg-white border border-gray-300 rounded p-2 h-[64px];
+    @apply bg-white border border-gray-300 rounded p-2 h-[64px] outline-none focus:border-blue-500 hover:bg-gray-200 transition-colors;
   }
 }
 
@@ -25,7 +25,26 @@
     @apply text-3xl font-bold m-2;
   }
   .speakcaptcha-text {
-    @apply text-sm m-2 text-gray-800;
+    @apply m-2 text-gray-800;
+
+   }
+  .speakcaptcha-text-js {
+    @apply text-lg;
+  }
+  .speakcaptcha-text-nosupport {
+    @apply text-lg;
+  }
+  .speakcaptcha-audio {
+    @apply m-2;
+    .speakcaptcha-audio-line1 {
+      @apply flex items-center gap-2;
+      button {
+        @apply flex items-center gap-2 bg-white border border-gray-300 rounded py-1 px-2 text-lg outline-none focus:border-blue-500 hover:bg-gray-200 transition-colors;
+      }
+    }
+    .speakcaptcha-audio-line2 {
+      @apply text-gray-500 mt-1 text-sm;
+    }
   }
 }
 
