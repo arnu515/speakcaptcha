@@ -44,6 +44,8 @@ class SpeakCaptcha {
 
   constructor(id) {
     this.id = id
+    this.baseUrl = window[`SPEAKCAPTCHA_${id}_BASEURL`] || window["SPEAKCAPTCHA_URL"] || window.location.origin
+    console.info(`[SPEAKCAPTCHA ${this.id}] Using base URL ${this.baseUrl}`)
   }
 
   newCaptcha() {
@@ -73,7 +75,7 @@ class SpeakCaptcha {
         this.stream = stream
 
         this.blobs = [];
-        this.recorder = new MediaRecorder(stream)
+        this.recorder = new MediaRecorder(stream, {mimeType: "audio/webm"})
         this.recorder.addEventListener("dataavailable", e => {
           this.blobs.push(e.data)
         })
@@ -122,10 +124,27 @@ class SpeakCaptcha {
     }
   }
 
-  submit() {
+  async submit() {
     if (!this.recorded) {
       window.alert("Please record your answer by pressing the mic button first.")
       return
+    }
+
+    const submitBtn = $(".speakcaptcha-button-submit")
+    const reader = new FileReader()
+    submitBtn.disabled = true
+
+    const data = await fetch(this.baseUrl + "/api/captcha/process?captcha_id=" + this.id, {
+      method: "POST",
+      body: this.recorded,
+      headers: {
+        "Content-Type": "audio/webm"
+      }
+    })
+    const json = await data.json()
+    submitBtn.disabled = false
+    if (json.error) {
+      window.alert(`${json.error}: ${json.error_description}`)
     }
   }
 

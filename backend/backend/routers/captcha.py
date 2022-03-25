@@ -35,3 +35,25 @@ def generate_captcha(request: Request, application_id: str = Query(...), from_id
     captcha = b64encode(ImageCaptcha().generate(captcha_solution).getvalue()).decode("utf-8")
     print("a", captchas)
     return jinja.TemplateResponse("captcha.html", dict(captcha=captcha, captcha_id=captcha_id, request=request))
+
+
+@router.post("/process")
+async def process_captcha_answer(request: Request, captcha_id: str = Query(...)):
+    if captcha_id not in captchas:
+        raise HTTPError("Captcha not found", "Captcha not found", 404)
+
+    captcha = captchas[captcha_id]
+    if captcha["solved"]:
+        raise HTTPError("Captcha already solved", "Captcha already solved", 400)
+
+    # get raw request body
+    body = await request.body()
+    if body is None:
+        raise HTTPError("No body", "No body", 400)
+
+    # temp
+    # store base64 body to file
+    with open("captcha.webm", "wb") as f:
+        f.write(body)
+
+    return dict(success=True)
