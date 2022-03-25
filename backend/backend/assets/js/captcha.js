@@ -14,17 +14,25 @@ if (!("mediaDevices" in navigator)) {
   $('.speakcaptcha-text-nosupport').style.display = 'block'
 }
 
-const micIcons = {
-  "off": `<svg width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+const icons = {
+  "micOff": `<svg width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="9" y="2" width="6" height="12" rx="3" stroke="currentColor" stroke-width="1.5"/>
 <path d="M5 10V11C5 14.866 8.13401 18 12 18V18V18C15.866 18 19 14.866 19 11V10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12 18V22M12 22H9M12 22H15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`,
-  "on": `<svg width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  "micOn": `<svg width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="9" y="2" width="6" height="12" rx="3" stroke="currentColor" stroke-width="1.5"/>
 <path d="M5 3V5M1 2V6M19 3V5M23 2V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M5 10V11C5 14.866 8.13401 18 12 18V18V18C15.866 18 19 14.866 19 11V10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12 18V22M12 22H9M12 22H15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`,
+  "playOff": `<svg width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.90588 4.53682C6.50592 4.2998 6 4.58808 6 5.05299V18.947C6 19.4119 6.50592 19.7002 6.90588 19.4632L18.629 12.5162C19.0211 12.2838 19.0211 11.7162 18.629 11.4838L6.90588 4.53682Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`,
+  "playOn": `<svg width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 14V10C2 9.44772 2.44772 9 3 9H5.69722C5.89465 9 6.08766 8.94156 6.25192 8.83205L10.4453 6.03647C11.1099 5.59343 12 6.06982 12 6.86852V17.1315C12 17.9302 11.1099 18.4066 10.4453 17.9635L6.25192 15.1679C6.08766 15.0584 5.89465 15 5.69722 15H3C2.44772 15 2 14.5523 2 14Z" stroke="currentColor" stroke-width="1.5"/>
+<path d="M16.5 7.5C16.5 7.5 18 9 18 11.5C18 14 16.5 15.5 16.5 15.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M19.5 4.5C19.5 4.5 22 7 22 11.5C22 16 19.5 18.5 19.5 18.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`
 }
 
@@ -58,7 +66,7 @@ class SpeakCaptcha {
       $(".speakcaptcha-audio").style.display = "none";
       this.recorded = null
       navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-        $(".speakcaptcha-button-microphone").innerHTML = micIcons.on
+        $(".speakcaptcha-button-microphone").innerHTML = icons.micOn
         $(".speakcaptcha-button-microphone").title = "Stop recording answer"
         $(".speakcaptcha-button-microphone")["aria-label"] = "Stop recording answer"
         console.log(stream)
@@ -97,7 +105,7 @@ class SpeakCaptcha {
         }
       })
     } else {
-      $(".speakcaptcha-button-microphone").innerHTML = micIcons.off
+      $(".speakcaptcha-button-microphone").innerHTML = icons.micOff
       $(".speakcaptcha-button-microphone").title = "Record captcha answer"
       $(".speakcaptcha-button-microphone")["aria-label"] = "Record captcha answer"
 
@@ -131,6 +139,12 @@ class SpeakCaptcha {
     reader.onload = e => {
       const audio = new Audio(e.target.result)
       audio.play()
+      $(".speakcaptcha-button-play").disabled = true;
+      $(".speakcaptcha-button-play").innerHTML = `${icons.playOn} Playing`;
+      audio.onended = () => {
+        $(".speakcaptcha-button-play").disabled = false;
+        $(".speakcaptcha-button-play").innerHTML = `${icons.playOff} Play your recording`;
+      }
     }
     reader.readAsDataURL(this.recorded)
   }

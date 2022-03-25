@@ -41,6 +41,9 @@
       button {
         @apply flex items-center gap-2 bg-white border border-gray-300 rounded py-1 px-2 text-lg outline-none focus:border-blue-500 hover:bg-gray-200 transition-colors;
       }
+      button:disabled {
+        @apply bg-gray-300 cursor-not-allowed;
+      }
     }
     .speakcaptcha-audio-line2 {
       @apply text-gray-500 mt-1 text-sm;
