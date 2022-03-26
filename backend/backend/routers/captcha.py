@@ -1,7 +1,7 @@
 import os
 from base64 import b64encode
 from captcha.image import ImageCaptcha
-from fastapi import APIRouter, Query, Request, Body, Header, Depends
+from fastapi import APIRouter, Query, Request, Body, Depends
 from nanoid import generate as nanoid
 from math import floor
 from time import time
@@ -34,6 +34,7 @@ def generate_captcha(request: Request, application_id: str = Query(...), from_id
     captchas[captcha_id] = {
         "solution": captcha_solution,
         "created_at": captcha_created_at,
+        "app_id": app.id,
         "process_token": None,
         "solved": False
     }
