@@ -101,7 +101,7 @@ def create_application(application_id: str, body: ApplicationRequest, user: User
     if app is None:
         raise HTTPError("Application not found", "Application not found", 404)
     if app.owner_id != user.id:
-        raise HTTPError("Not authorized", "You are not authorized to update this application", 403)
+        raise HTTPError("You are not authorized to update this application", "Not authorized", 403)
     app.name = body.name
     app.save()
     return {"application": ApplicationResponse(**app.dict(), owner=user)}
@@ -113,7 +113,7 @@ def rotate_application_secret(application_id: str, user: User = Depends(use_user
     if app is None:
         raise HTTPError("Application not found", "Application not found", 404)
     if app.owner_id != user.id:
-        raise HTTPError("Not authorized", "You are not authorized to update this application", 403)
+        raise HTTPError("You are not authorized to update this application", "Not authorized", 403)
     secret = app.rotate_secret()
     return {"application": ApplicationResponse(**app.dict(), owner=user), "secret": secret}
 
@@ -124,6 +124,6 @@ def delete_application(application_id: str, user: User = Depends(use_user())):
     if app is None:
         raise HTTPError("Application not found", "Application not found", 404)
     if app.owner_id != user.id:
-        raise HTTPError("Not authorized", "You are not authorized to update this application", 403)
+        raise HTTPError("You are not authorized to update this application", "Not authorized", 403)
     app.delete()
     return {"application": ApplicationResponse(**app.dict(), owner=user)}
