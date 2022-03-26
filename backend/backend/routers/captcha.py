@@ -1,7 +1,7 @@
 import os
 from base64 import b64encode
 from captcha.image import ImageCaptcha
-from fastapi import APIRouter, Query, Request, Body
+from fastapi import APIRouter, Query, Request, Body, Header, Depends
 from nanoid import generate as nanoid
 from math import floor
 from time import time
@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from requests import post
 
 from backend.dependencies.jinja2 import jinja
-from backend.lib.util import HTTPError
+from backend.lib.util import HTTPError, parse_basic_auth_header_depend
 from backend.models.application import Application
 
 router = APIRouter()
@@ -116,11 +116,23 @@ class ValidateCaptchaBody(BaseModel):
 
 
 @router.post("/validate")
-def validate_captcha(body: ValidateCaptchaBody = Body(...)):
+def validate_captcha(body: ValidateCaptchaBody = Body(...),
+                     creds: dict | None = Depends(parse_basic_auth_header_depend)):
+    if creds is None:
+        raise HTTPError("Unauthorized", status_code=401)
+
+    app: Application | None = Application.get(creds["username"])[0]
+    if app is None:
+        raise HTTPError("Invalid credentials", status_code=401)
+    if not app.check_secret(creds["password"]):
+        raise HTTPError("Invalid credentials", status_code=401)
+
     if body.captcha_id not in captchas:
         raise HTTPError("Captcha not found", "Captcha not found", 404)
     captcha = captchas[body.captcha_id]
 
+    if captcha["app_id"] != app.id:
+        raise HTTPError("Captcha not found", "Captcha not found", 404)
     if not captcha["solved"]:
         raise HTTPError("Captcha not solved", "Invalid captcha", 400)
     if captcha["process_token"] != body.process_token:
