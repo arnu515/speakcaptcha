@@ -7,7 +7,7 @@
     "gulp:dev": "gulp dev",
     "fastapi": "poetry run python3 main.py",
     "tailwindcss": "tailwindcss",
-    "dev": "npm-run-all -p gulp:dev fastapi"
+    "dev": "npm-run-all -lp gulp:dev fastapi"
   },
   "devDependencies": {
     "@babel/core": "^7.17.8",
