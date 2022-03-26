@@ -102,6 +102,7 @@ async def process_captcha_answer(request: Request, captcha_id: str = Query(...))
 
     # create a process token and store it in the captcha
     captcha["process_token"] = nanoid("abcdef0123456789", 32)
+    captcha["solved"] = True
     print(captchas)
 
     return dict(transcript=transcript, process_token=captcha["process_token"])
