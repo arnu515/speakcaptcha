@@ -1,10 +1,12 @@
 import os
 from base64 import b64encode
 from captcha.image import ImageCaptcha
-from fastapi import APIRouter, Query, Request
+from fastapi import APIRouter, Query, Request, Body
 from nanoid import generate as nanoid
 from math import floor
 from time import time
+
+from pydantic import BaseModel
 from requests import post
 
 from backend.dependencies.jinja2 import jinja
@@ -106,3 +108,23 @@ async def process_captcha_answer(request: Request, captcha_id: str = Query(...))
     print(captchas)
 
     return dict(transcript=transcript, process_token=captcha["process_token"])
+
+
+class ValidateCaptchaBody(BaseModel):
+    process_token: str
+    captcha_id: str
+
+
+@router.post("/validate")
+def validate_captcha(body: ValidateCaptchaBody = Body(...)):
+    if body.captcha_id not in captchas:
+        raise HTTPError("Captcha not found", "Captcha not found", 404)
+    captcha = captchas[body.captcha_id]
+
+    if not captcha["solved"]:
+        raise HTTPError("Captcha not solved", "Invalid captcha", 400)
+    if captcha["process_token"] != body.process_token:
+        raise HTTPError("Invalid process token", "Invalid captcha", 400)
+
+    captchas.pop(body.captcha_id)
+    return dict(success=True)
