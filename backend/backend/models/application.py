@@ -35,6 +35,9 @@ class Application(Model):
         self.save()
         return secret
 
+    def check_secret(self, secret: str) -> bool:
+        return hashlib.sha256(secret.encode()).hexdigest() == self.secret
+
 
 class ApplicationRequest(BaseModel):
     name: str = Field(max_length=64, min_length=4)
