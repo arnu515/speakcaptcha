@@ -5,6 +5,7 @@ $('.speakcaptcha-image').style.display = 'flex'
 $('.speakcaptcha-text-js').style.display = 'none'
 $('.speakcaptcha-text-info').style.display = 'block'
 $('.speakcaptcha-text-nosupport').style.display = 'none'
+$('.speakcaptcha-text-solved').style.display = 'none'
 
 // check that webrtc is supported
 if (!("mediaDevices" in navigator)) {
@@ -12,6 +13,7 @@ if (!("mediaDevices" in navigator)) {
   $('.speakcaptcha-text-js').style.display = 'none'
   $('.speakcaptcha-text-info').style.display = 'none'
   $('.speakcaptcha-text-nosupport').style.display = 'block'
+  $('.speakcaptcha-text-solved').style.display = 'none'
 }
 
 const icons = {
@@ -41,6 +43,8 @@ class SpeakCaptcha {
   recorder = null
   blobs = []
   recorded = null
+  solution = null
+  process_token = null
 
   constructor(id) {
     this.id = id
@@ -144,7 +148,27 @@ class SpeakCaptcha {
     const json = await data.json()
     submitBtn.disabled = false
     if (json.error) {
+      window.dispatchEvent(new CustomEvent(`speakcaptcha:${this.id}:error`, {detail: json}))
+      if (json.error.toLowerCase() === "invalid captcha") {
+        window.dispatchEvent(new CustomEvent(`speakcaptcha:${this.id}:invalid`, {detail: json}))
+        $(".speakcaptcha-incorrect").style.display = "flex"
+        $(".speakcaptcha-incorrect-transcript").innerText = "You spoke: " + (json.transcript || "<unable to decipher>")
+        $(".speakcaptcha-audio").style.display = "none";
+        return
+      }
       window.alert(`${json.error}: ${json.error_description}`)
+    } else {
+      $('.speakcaptcha-image').style.display = 'none'
+      $('.speakcaptcha-text-js').style.display = 'none'
+      $('.speakcaptcha-text-info').style.display = 'none'
+      $('.speakcaptcha-text-nosupport').style.display = 'none'
+      $('.speakcaptcha-audio').style.display = 'none'
+      $('.speakcaptcha-incorrect').style.display = 'none'
+      $('.speakcaptcha-text-solved').style.display = 'block'
+      console.log("Captcha solved: ", json)
+      window.dispatchEvent(new CustomEvent(`speakcaptcha:${this.id}:solved`, {detail: json}))
+      this.solution = json.transcript
+      this.process_token = json.process_token
     }
   }
 

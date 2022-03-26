@@ -10,6 +10,11 @@
   <script>
     // expose jinja template variables to javascript
     var captcha_id = '{{captcha_id}}';
+
+    // temp
+    window.addEventListener(`speakcaptcha:${captcha_id}:error`, console.log);
+    window.addEventListener(`speakcaptcha:${captcha_id}:invalid`, console.log);
+    window.addEventListener(`speakcaptcha:${captcha_id}:solved`, console.log);
   </script>
 </head>
 <body>
@@ -33,6 +38,7 @@
       </div>
       <div class="speakcaptcha-body">
         <p class="speakcaptcha-text speakcaptcha-text-info" style="display: none;">Please click the microphone button and speak out the numbers (in English) that you see in the above image.</p>
+        <p class="speakcaptcha-text speakcaptcha-text-solved" style="display: none;">You have solved the captcha!</p>
         <p class="speakcaptcha-text speakcaptcha-text-js" style="display: block;">You need to enable JavaScript to complete this captcha.</p>
         <p class="speakcaptcha-text speakcaptcha-text-nosupport" style="display: none;">Your browser does not support <strong>Speak</strong>Captcha. Please upgrade your browser to complete this captcha.</p>
 
@@ -54,6 +60,14 @@
           <div class="speakcaptcha-audio-line2">
             <p>Press the mic button to re-record audio. Press the tick button to submit.</p>
           </div>
+        </div>
+
+        <div class="speakcaptcha-incorrect" style="display: none">
+          <p class="speakcaptcha-incorrect-text">
+            Incorrect captcha! Please make sure to speak out the numbers (in English), one-by-one, as you see in the above image.
+          </p>
+          <p class="speakcaptcha-incorrect-transcript">You spoke: XXXXXXX</p>
+          <p class="speakcaptcha-incorrect-helpful">Speak out the numbers like this: "five seven one three two nine"</p>
         </div>
       </div>
       <div class="speakcaptcha-footer">

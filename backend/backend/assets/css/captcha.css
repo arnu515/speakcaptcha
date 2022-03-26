@@ -49,6 +49,19 @@
       @apply text-gray-500 mt-1 text-sm;
     }
   }
+  .speakcaptcha-incorrect {
+    @apply gap-1 flex-col m-2;
+    p { margin: 0; }
+    .speakcaptcha-incorrect-text {
+      @apply text-red-500 font-medium text-lg;
+    }
+    .speakcaptcha-incorrect-transcript {
+      @apply font-mono;
+    }
+    .speakcaptcha-incorrect-helpful {
+      @apply text-gray-500 text-sm;
+    }
+  }
 }
 
 .speakcaptcha-footer {

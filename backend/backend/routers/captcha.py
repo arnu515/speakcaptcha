@@ -1,9 +1,11 @@
+import os
 from base64 import b64encode
 from captcha.image import ImageCaptcha
 from fastapi import APIRouter, Query, Request
 from nanoid import generate as nanoid
 from math import floor
 from time import time
+from requests import post
 
 from backend.dependencies.jinja2 import jinja
 from backend.lib.util import HTTPError
@@ -30,6 +32,7 @@ def generate_captcha(request: Request, application_id: str = Query(...), from_id
     captchas[captcha_id] = {
         "solution": captcha_solution,
         "created_at": captcha_created_at,
+        "process_token": None,
         "solved": False
     }
     captcha = b64encode(ImageCaptcha().generate(captcha_solution).getvalue()).decode("utf-8")
@@ -50,10 +53,55 @@ async def process_captcha_answer(request: Request, captcha_id: str = Query(...))
     body = await request.body()
     if body is None:
         raise HTTPError("No body", "No body", 400)
+    if not ((request.headers.get("content-type") or "").startswith("audio")):
+        raise HTTPError("Please send a .webm file as the body", "Invalid body", 422)
 
-    # temp
-    # store base64 body to file
-    with open("captcha.webm", "wb") as f:
-        f.write(body)
+    # get captcha transcript from deepgram
+    res = post("https://api.deepgram.com/v1/listen?language=en_US", data=body,
+               headers={"Authorization": "Token " + os.getenv("DEEPGRAM_KEY_SECRET"), "Content-Type": "audio/webm",
+                        "Accept": "application/json"})
+    print(res.content)
+    data = res.json()
+    if res.status_code != 200:
+        print(data, res.status_code)
+        raise HTTPError("An error occured while processing your words", "Deepgram API error", 500)
 
-    return dict(success=True)
+    try:
+        transcript = data["results"]["channels"][0]["alternatives"][0]["transcript"]
+    except (ValueError, IndexError, KeyError):
+        raise HTTPError("Could not get transcript", "Deepgram API error", 500)
+
+    numbers_to_names_map = {
+        "zero": "0",
+        "one": "1",
+        "two": "2",
+        "three": "3",
+        "four": "4",
+        "five": "5",
+        "six": "6",
+        "seven": "7",
+        "eight": "8",
+        "nine": "9"
+    }
+
+    # convert names to numbers in transcript
+    for name, number in numbers_to_names_map.items():
+        transcript = transcript.replace(name, number)
+
+    # make sure transcript is only numbers
+    transcript = transcript.replace(" ", "")
+    print(transcript)
+    if not all(c.isdigit() for c in transcript):
+        raise HTTPError("Please speak out the numbers one-by-one. Don't include any other words.", "Invalid captcha",
+                        422, data=dict(transcript=transcript))
+
+    # check that captcha is correct
+    if captcha["solution"] != transcript:
+        raise HTTPError("You may have incorrectly spoken out the numbers. Please try again.", "Invalid captcha", 422,
+                        data=dict(transcript=transcript))
+
+    # create a process token and store it in the captcha
+    captcha["process_token"] = nanoid("abcdef0123456789", 32)
+    print(captchas)
+
+    return dict(transcript=transcript, process_token=captcha["process_token"])
