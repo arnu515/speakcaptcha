@@ -37,5 +37,5 @@ def parse_basic_auth_header(header: Optional[str]) -> Optional[dict]:
         return None
 
 
-def parse_basic_auth_header_depend(authorization: Header(None)) -> Optional[dict]:
+def parse_basic_auth_header_depend(authorization: str = Header(None)) -> Optional[dict]:
     return parse_basic_auth_header(authorization)
