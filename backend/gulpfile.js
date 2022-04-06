@@ -26,8 +26,9 @@ const task = series(
   parallel(css, js)
 )
 
-function dev() {
-  watch(["backend/**/*.{css,py,js,html}", "!backend/static/**/*"], task) 
+async function dev() {
+  await task()
+  watch(["backend/**/*.{css,py,js,html}", "!backend/static/**/*"], task)
 }
 
 module.exports = {
