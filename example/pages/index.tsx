@@ -13,17 +13,14 @@ const Index: NextPage = () => {
 					<strong className="font-black">Speak</strong>Captcha Demo
 				</h1>
 				<p className="mt-8 text-center text-xl">
-					There are two ways you can integrate <strong>Speak</strong>Captcha into your
-					application.
+					Demos that show you how you can use SpeakCaptcha in your application.
 				</p>
 
 				<div className="mt-12 flex flex-col items-center justify-center gap-4">
-					<Link href="/with-events">
-						<a className="text-lg text-blue-500">With Events</a>
+					<Link href="/basic">
+						<a className="text-lg text-blue-500">Basic demo</a>
 					</Link>
-					<Link href="/eventless">
-						<a className="text-lg text-blue-500">Event-less</a>
-					</Link>
+					<span className="text-lg text-gray-500">More coming soon...</span>
 				</div>
 
 				<p className="mt-24 text-center text-gray-500">
