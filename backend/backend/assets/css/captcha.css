@@ -26,8 +26,7 @@
   }
   .speakcaptcha-text {
     @apply m-2 text-gray-800;
-
-   }
+  }
   .speakcaptcha-text-js {
     @apply text-lg;
   }
@@ -51,7 +50,9 @@
   }
   .speakcaptcha-incorrect {
     @apply gap-1 flex-col m-2;
-    p { margin: 0; }
+    p {
+      margin: 0;
+    }
     .speakcaptcha-incorrect-text {
       @apply text-red-500 font-medium text-lg;
     }
