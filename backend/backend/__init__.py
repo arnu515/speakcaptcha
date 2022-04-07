@@ -11,7 +11,7 @@ from .routers.developers import router as developers
 
 app.include_router(developers, prefix='/api/developers')
 app.include_router(captcha, prefix='/api/captcha')
-# app.mount("/", static, name="static")
+app.mount("/static", static, name="static")
 app.mount("/", serve, name="dist")
 
 
