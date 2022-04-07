@@ -24,7 +24,7 @@ const Index: NextPage = () => {
 				</div>
 
 				<p className="mt-24 text-center text-gray-500">
-					Both ways are perfectly fine to use. For more info, read the{" "}
+					For more info, read the{" "}
 					<a
 						className="text-blue-500 underline"
 						href={`${process.env.NEXT_PUBLIC_SPEAKCAPTCHA_URL}/developers/docs`}
