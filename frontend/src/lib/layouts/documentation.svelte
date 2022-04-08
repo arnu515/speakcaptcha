@@ -6,6 +6,7 @@ import { Link } from "svelte-navigator"
 
 export let title
 export let summary
+export let path
 
 let sidebarVisible = false
 
@@ -34,6 +35,24 @@ const nextRoute =
 	<div class="prose md:prose-lg lg:prose-xl">
 		<slot />
 	</div>
+	<hr class="border-t border-gray-300 w-[70%] ml-4 my-8" />
+	<div class="mt-4 flex items-center gap-2">
+		{#if prevRoute}
+			<Link
+				to="/documentation/{prevRoute.m.path}"
+				class="button !px-2 !py-1 !rounded-none">Previous</Link>
+		{/if}
+		{#if nextRoute}
+			<Link
+				to="/documentation/{nextRoute.m.path}"
+				class="button !px-2 !py-1 !rounded-none">Next</Link>
+		{/if}
+	</div>
+	<p class="mt-4 text-gray-500 text-sm">
+		<a
+			href="https://github.com/arnu515/speakcaptcha/blob/master/frontend/src/lib/pages/documentation/{path}.svx"
+			>Edit this page on GitHub</a>
+	</p>
 </div>
 
 <button
