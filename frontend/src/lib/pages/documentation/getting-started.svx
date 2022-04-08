@@ -1,0 +1,7 @@
+---
+title: "Getting Started with <strong>Speak</strong>Captcha"
+summary: "Learn how to get started with <strong>Speak</strong>Captcha"
+path: "getting-started"
+---
+
+Hi!

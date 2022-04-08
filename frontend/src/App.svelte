@@ -3,6 +3,7 @@ import DeveloperRoutes from "$lib/components/DeveloperRoutes.svelte"
 import Navbar from "$lib/components/Navbar.svelte"
 import Index from "$lib/pages/Index.svelte"
 import Docs from "$lib/pages/Docs.svelte"
+import DocumentationRoutes from "$lib/pages/documentation/_routes.svelte"
 import { Router, Route } from "svelte-navigator"
 import { SvelteToast } from "@zerodevx/svelte-toast"
 </script>
@@ -15,6 +16,7 @@ import { SvelteToast } from "@zerodevx/svelte-toast"
 	<Route path="/docs">
 		<Docs />
 	</Route>
+	<DocumentationRoutes />
 	<DeveloperRoutes />
 	<SvelteToast />
 </Router>
