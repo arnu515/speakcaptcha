@@ -71,4 +71,8 @@
   a {
     @apply transition-colors hover:underline hover:text-black;
   }
+
+  .speakcaptcha-footer-section-2 {
+    @apply flex items-center gap-4;
+  }
 }
