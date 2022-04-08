@@ -9,3 +9,29 @@ Let's get started with **Speak**Captcha.
 You will learn how you can add **Speak**Captcha to your web application and how you can validate the response on the backend.
 
 ## How **Speak**Captcha works
+
+Here's how **Speak**Captcha works -- from a developer perspective.
+
+First, you embed the **Speak**Captcha widget in your frontend using an `<iframe>`.
+
+Next, you need to listen to a few events on the frontend that are emitted by the **Speak**Captcha widget. These events include:
+
+- `solved`: When the user gave the correct answer.
+- `invalid`: When the user gave an invalid answer.
+- `error`: When any other unexpected error occured.
+
+**Speak**Captcha does the job of displaying to the user a useful message if an error occurs, so you need not handle the `invalid` and `error` events.
+
+The `solved` event gets emitted with the captcha's solution, and a process token, which is used to identify the user's response. This is required to validate the response later on.
+
+You can now allow enable the form's submit button, or automatically submit the form, or whatever it is that you want to do after the captcha gets solved.
+
+### Validating the captcha on the backend
+
+Just handling the `solved` event is not enough. An attacker can easily spoof events, so you need to do additional validation to make sure the captcha has been solved properly.
+
+You do this by sending a request to **Speak**Captcha's API along with the solution and process token you got earlier, and if you get back a positive response, you can assume that the captcha has been solved correctly.
+
+If not, the captcha has been tampered with, and the user may be a bot.
+
+Now that you know how **Speak**Captcha is implemented, you can get started with your own implementation. Click the `Next` button to get to a step-by-step tutorial that uses [NextJS](https://nextjs.com).
