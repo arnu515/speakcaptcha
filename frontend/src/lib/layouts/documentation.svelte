@@ -93,6 +93,9 @@ const nextRoute =
 .prose a {
 	@apply text-blue-500 no-underline hover:underline cursor-pointer;
 }
+.prose img {
+	@apply w-full border border-gray-500 rounded my-4;
+}
 code[class*="language-"],
 pre[class*="language-"] {
 	color: #ccc;
