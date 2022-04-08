@@ -2,8 +2,12 @@
 import GettingStarted, {
 	metadata as gettingStartedMetadata
 } from "./getting-started.svx"
+import Test, { metadata as testMetadata } from "./test.svx"
 
-export const routes = [{ c: GettingStarted, m: gettingStartedMetadata }]
+export const routes = [
+	{ c: GettingStarted, m: gettingStartedMetadata },
+	{ c: Test, m: testMetadata }
+]
 </script>
 
 <script lang="ts">
