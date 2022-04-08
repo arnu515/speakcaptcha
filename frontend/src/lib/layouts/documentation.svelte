@@ -1,16 +1,35 @@
 <script>
 // Typescript doesn't work here for some reason
 import DocumentationSidebar from "$lib/components/DocumentationSidebar.svelte"
+import { routes } from "$lib/pages/documentation/_routes.svelte"
+import { Link } from "svelte-navigator"
 
 export let title
 export let summary
 
 let sidebarVisible = false
+
+const prevRoute =
+	routes[routes.indexOf(routes.find(route => route.m.title === title)) - 1] || undefined
+const nextRoute =
+	routes[routes.indexOf(routes.find(route => route.m.title === title)) + 1] || undefined
 </script>
 
 <div class="max-w-screen-lg mx-auto p-8 my-8">
 	<h1 class="text-5xl font-bold mt-12 mb-4">{@html title}</h1>
 	<p class="text-2xl mb-4">{@html summary}</p>
+	<div class="mt-4 flex items-center gap-2">
+		{#if prevRoute}
+			<Link
+				to="/documentation/{prevRoute.m.path}"
+				class="button !px-2 !py-1 !rounded-none">Previous</Link>
+		{/if}
+		{#if nextRoute}
+			<Link
+				to="/documentation/{nextRoute.m.path}"
+				class="button !px-2 !py-1 !rounded-none">Next</Link>
+		{/if}
+	</div>
 	<hr class="border-t border-gray-300 w-[70%] ml-4 my-8" />
 	<div class="prose md:prose-lg lg:prose-xl">
 		<slot />
