@@ -7,4 +7,13 @@
 	.button {
 		@apply bg-blue-500 rounded-lg cursor-pointer no-underline border border-transparent outline-none focus:border-black px-4 py-2 shadow-sm focus:shadow focus:bg-blue-600 hover:shadow hover:bg-blue-600 transition-all duration-500 text-white font-medium;
 	}
+	.button.gray {
+		@apply bg-gray-500 rounded-lg cursor-pointer no-underline border border-transparent outline-none focus:border-black px-4 py-2 shadow-sm focus:shadow focus:bg-gray-600 hover:shadow hover:bg-gray-600 transition-all duration-500 text-white font-medium;
+	}
+	.button.red {
+		@apply bg-red-500 rounded-lg cursor-pointer no-underline border border-transparent outline-none focus:border-black px-4 py-2 shadow-sm focus:shadow focus:bg-red-600 hover:shadow hover:bg-red-600 transition-all duration-500 text-white font-medium;
+	}
+	.button.white {
+		@apply bg-white rounded-lg cursor-pointer no-underline border border-transparent outline-none focus:border-black px-4 py-2 shadow-sm focus:shadow focus:bg-gray-100 hover:shadow hover:bg-gray-100 transition-all duration-500 text-blue-500 font-medium;
+	}
 }

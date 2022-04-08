@@ -92,14 +92,10 @@ async function deleteApp() {
 	<h1 class="text-center text-3xl font-bold m-6">App not found.</h1>
 	<p class="text-center my-4 text-2xl">Could not find an application with this ID.</p>
 	<p class="my-4 text-center flex items-center text-xl justify-center gap-2">
-		<button
-			on:click={() => navigate(-1)}
-			class="bg-blue-500 hover:bg-blue-600 text-white hover:no-underline px-4 py-2 rounded"
-			>Get started</button>
+		<button on:click={() => navigate(-1)} class="button">Get started</button>
 		<Link
 			to="/developers"
-			class="bg-gray-500 hover:bg-gray-600 text-white hover:no-underline px-4 py-2 rounded"
-			>Dashboard</Link>
+			class="button !bg-gray-500 !hover:bg-gray-600 !focus:bg-gray-600">Dashboard</Link>
 	</p>
 {:else}
 	<form
@@ -113,13 +109,8 @@ async function deleteApp() {
 			placeholder={app.name || "Enter the name of your application."}
 			bind:value={enteredName} />
 		<p class="my-4">
-			<button
-				class="bg-blue-500 hover:bg-blue-600 text-white hover:no-underline px-4 py-2 rounded"
-				>Update application</button>
-			<button
-				type="button"
-				on:click={() => navigate(-1)}
-				class="bg-gray-500 hover:bg-gray-600 text-white hover:no-underline px-4 py-2 rounded ml-2"
+			<button class="button">Update application</button>
+			<button type="button" on:click={() => navigate(-1)} class="button gray"
 				>Go back</button>
 		</p>
 	</form>
@@ -169,9 +160,7 @@ async function deleteApp() {
 			<strong>CAUTION</strong>.
 		</p>
 		<p>
-			<button
-				class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 transition-colors cursor-pointer rounded"
-				on:click={deleteApp}>Delete application</button>
+			<button class="button red" on:click={deleteApp}>Delete application</button>
 		</p>
 	</div>
 {/if}
