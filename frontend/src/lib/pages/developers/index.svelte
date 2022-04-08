@@ -30,12 +30,10 @@ onMount(async () => {
 		to your <strong class="font-bold">Speak</strong>Captcha developer dashboard.
 	</p>
 	<div class="my-6 text-center">
-		<Link
-			to="/developers/new"
-			class="bg-blue-500 hover:bg-blue-600 text-white hover:no-underline px-4 py-2 rounded"
-			>Create a new application</Link>
+		<Link to="/developers/new" class="button">Create a new application</Link>
 	</div>
 	<div class="my-12 mx-6">
+		<h2 class="text-center my-4 text-2xl font-bold">Your applications</h2>
 		{#if $applications === null}
 			<Loading center />
 		{:else if $applications.length}

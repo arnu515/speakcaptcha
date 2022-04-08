@@ -9,8 +9,7 @@ import { Link } from "svelte-navigator"
 		<li><Link to="/developers/docs">Documentation</Link></li>
 		<li>
 			<Link class="get-started" to="/developers"
-				>{$user ? "Dashboard" : "Get started"}</Link
-			>
+				>{$user ? "Dashboard" : "Get started"}</Link>
 		</li>
 	</ul>
 </nav>
@@ -36,6 +35,6 @@ nav.navbar-xp3ij9 li a {
 }
 
 nav.navbar-xp3ij9 li a.get-started {
-	@apply bg-blue-500 hover:bg-blue-600 text-white hover:no-underline px-2 py-1 rounded;
+	@apply bg-blue-500 rounded cursor-pointer no-underline border border-transparent outline-none focus:border-black px-2 py-1 shadow-sm focus:shadow focus:bg-blue-600 hover:shadow hover:bg-blue-600 transition-all duration-500 text-white font-medium;
 }
 </style>
