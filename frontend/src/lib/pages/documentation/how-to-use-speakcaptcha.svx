@@ -1,0 +1,35 @@
+---
+title: How to use <strong>Speak</strong>Captcha
+summary: This guide will show you how to complete a <strong>Speak</strong>Captcha
+path: how-to-use-speakcaptcha
+---
+
+<script>
+  import SpeakCaptchaDemo from "$lib/components/SpeakCaptchaDemo.svelte";
+</script>
+
+In this guide, you'll learn how you can complete a **Speak**Captcha.
+
+**Speak**Captcha is a captcha service that makes the user speak out the captcha challenge.
+
+You can see a demo embedded below.
+
+<SpeakCaptchaDemo id="getting-started-demo" />
+
+## Speak out the captcha
+
+Press the microphone button and speak out the numbers you see in the image **one-by-one**. If you see `583271` in the image, you should say `"five eight three two seven one"`.
+
+> If you are unable to decipher the image, you can click the reload button (next to the mic) to get a new image.
+
+Once you speak out the numbers, you can click the microphone button again to stop recording.
+
+You should now see two buttons appear: one to play the recording and one to sumbit your answer.
+
+Once you're confident that you've said the numbers correctly, you can click the submit button to submit your answer.
+
+The website **Speak**Captcha is embedded in will be notified if you got the answer correct or not, and a relevant message will be displayed. If your answer was incorrect, you can try again, or try with another captcha image.
+
+Once you get the answer correct, the website you're using will be informed and you can continue with your browsing.
+
+[Learn how you can embed <span class="text-black">**Speak**Captcha</span> in your own website](/documentation/getting-started)

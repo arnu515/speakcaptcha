@@ -2,11 +2,11 @@
 import GettingStarted, {
 	metadata as gettingStartedMetadata
 } from "./getting-started.svx"
-import Test, { metadata as testMetadata } from "./test.svx"
+import HTUS, { metadata as htusMetadata } from "./how-to-use-speakcaptcha.svx"
 
 export const routes = [
 	{ c: GettingStarted, m: gettingStartedMetadata },
-	{ c: Test, m: testMetadata }
+	{ c: HTUS, m: htusMetadata }
 ]
 </script>
 

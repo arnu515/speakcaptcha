@@ -4,4 +4,8 @@ summary: "Learn how to get started with <strong>Speak</strong>Captcha"
 path: "getting-started"
 ---
 
-# Hi!
+Let's get started with **Speak**Captcha.
+
+You will learn how you can add **Speak**Captcha to your web application and how you can validate the response on the backend.
+
+## How **Speak**Captcha works
