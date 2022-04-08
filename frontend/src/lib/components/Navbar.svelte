@@ -6,7 +6,7 @@ import { Link } from "svelte-navigator"
 <nav class="navbar-xp3ij9">
 	<Link to="/"><strong>Speak</strong>Captcha</Link>
 	<ul>
-		<li><Link to="/developers/docs">Documentation</Link></li>
+		<li><Link to="/documentation">Documentation</Link></li>
 		<li>
 			<Link class="get-started" to="/developers"
 				>{$user ? "Dashboard" : "Get started"}</Link>
