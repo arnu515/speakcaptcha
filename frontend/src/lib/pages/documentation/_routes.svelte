@@ -5,8 +5,8 @@ import GettingStarted, {
 import HTUS, { metadata as htusMetadata } from "./how-to-use-speakcaptcha.svx"
 
 export const routes = [
-	{ c: GettingStarted, m: gettingStartedMetadata },
-	{ c: HTUS, m: htusMetadata }
+	{ c: HTUS, m: htusMetadata },
+	{ c: GettingStarted, m: gettingStartedMetadata }
 ]
 </script>
 
