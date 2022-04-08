@@ -4,13 +4,14 @@ import { resolve } from "path"
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-	const proxy = mode === "development" ? 
-			{
-				"/api": {
-					target: "http://localhost:5000",
-					changeOrigin: true
-				}
-			} 
+	const proxy =
+		mode === "development"
+			? {
+					"/api": {
+						target: "http://localhost:5000",
+						changeOrigin: true
+					}
+			  }
 			: undefined
 	return {
 		plugins: [svelte()],
