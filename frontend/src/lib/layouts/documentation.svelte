@@ -90,6 +90,9 @@ const nextRoute =
 <DocumentationSidebar bind:visible={sidebarVisible} currentTitle={title} />
 
 <style global>
+.prose a {
+	@apply text-blue-500 no-underline hover:underline cursor-pointer;
+}
 code[class*="language-"],
 pre[class*="language-"] {
 	color: #ccc;
