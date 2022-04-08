@@ -1,12 +1,14 @@
-<script lang="ts">
-import { Route } from "svelte-navigator"
-import Index from "./index.svelte"
-
+<script lang="ts" context="module">
 import GettingStarted, {
 	metadata as gettingStartedMetadata
 } from "./getting-started.svx"
 
-const routes = [{ c: GettingStarted, m: gettingStartedMetadata }]
+export const routes = [{ c: GettingStarted, m: gettingStartedMetadata }]
+</script>
+
+<script lang="ts">
+import { Route } from "svelte-navigator"
+import Index from "./index.svelte"
 </script>
 
 <Route path="/documentation">
