@@ -91,10 +91,19 @@ const nextRoute =
 
 <style global>
 .prose a {
-	@apply text-blue-500 no-underline hover:underline cursor-pointer;
+	color: rgb(59, 130, 246); /* bg-blue-500 */
+	text-decoration: none; /* no-underline */
+	cursor: pointer; /* cursor-pointer */
+}
+.prose a:hover {
+	text-decoration: underline; /* underline */
 }
 .prose img {
-	@apply w-full border border-gray-500 rounded my-4;
+	width: 100%; /* w-full */
+	border: 1px rgb(107, 114, 128) solid; /* border border-gray-500 */
+	border-radius: 0.25rem; /* rounded */
+	margin-top: 1rem; /* my-4 */
+	margin-bottom: 1rem; /* my-4 */
 }
 code[class*="language-"],
 pre[class*="language-"] {
