@@ -1,0 +1,515 @@
+---
+title: A Tutorial for <strong>Speak</strong>Captcha
+summary: A step-by-step tutorial teaching you how to implement <strong>Speak</strong>Captcha with NextJS.
+path: tutorial
+---
+
+In this tutorial, you'll learn how you can use **Speak**Captcha in your application.
+
+To keep things simple, I'll use [NextJS](https://nextjs.com), a fullstack framework for ReactJS. **Speak**Captcha is framework-agnostic and can be used with any frontend or backend framework, since it just uses iframes and REST API requests.
+
+To get started, create a new NextJS project using the [NextJS CLI](https://nextjs.com/docs/cli/).
+
+Run the below command in an empty folder:
+
+```bash
+npx next init .
+```
+
+> Feel free to add TypeScript or Tailwind or whatever else you like to your project.
+
+Make sure to get rid of any boilerplate code that might be present (files like `api/hello.js`) and add this to your `pages/index.js`:
+
+```jsx
+import Head from "next/head"
+
+const Index = () => {
+	return (
+		<>
+			<Head>
+				<title>SpeakCaptcha Test</title>
+			</Head>
+			<h1>SpeakCaptcha Test</h1>
+		</>
+	)
+}
+
+export default Index
+```
+
+Currently, the styles are bland and boring. Let's add a small 400kB CSS framework called [Skeleton](https://getskeleton.com) to this project. Of course, you can use any other CSS framework like Tailwind or Bootstrap if you like.
+
+Simply open [this page](https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css) to get the Skeleton CSS file and copy-paste its contents to the `styles/globals.css` file in your project to add Skeleton to your project.
+
+## Creating an application on **Speak**Captcha
+
+Before you can implement **Speak**Captcha, you need to create an application on the **Speak**Captcha website.
+
+This does require an account, but don't worry, you can use GitHub to login, we don't need a password.
+
+Head to [your developer dashboard](/developers) and login with your GitHub account.
+
+Here's what you should see after you've logged in:
+
+![Screenshot of the SpeakCaptcha dashboard](https://i.imgur.com/IYcu0nc.png "Your SpeakCaptcha dashboard")
+
+Click the `Create a new Application` button and fill out the name of your application. Once you've created the application, **be sure** to **note down the application ID and secret**. The same secret will **NEVER** be shown again to you. If you lose it, you need to create a new secret.
+
+![Screenshot of the Application Credentials page](https://i.imgur.com/MZehUSy.png "Your application's page")
+
+Now you'll need to save these credentials in a `.env` file in your project root. Create a file called `.env.local` and add the following lines:
+
+```plain
+NEXT_PUBLIC_SPEAKCAPTCHA_APP_ID=<your application ID>
+SPEAKCAPTCHA_APP_SECRET=<your application secret>
+```
+
+> Be sure to remove the `<>`s while substituting your variables!
+
+**Why is `NEXT_PUBLIC_` used?**
+
+By default, any environment variables you create will only be available in the backend of the NextJS project, because environment variables are treated as secrets, and it's not good if any user can just see them.
+
+You can expose a variable to the frontend by prefixing it with `NEXT_PUBLIC_` to indicate that it is not a secret.
+
+## Add a login form
+
+Let's add a simple login form to our application:
+
+```html
+<form onSubmit={submitLoginForm} style={{ margin: '1rem' }}>
+	<label htmlFor="email">Email: </label>
+	<input type="email" name="email" id="email" />
+	<label htmlFor="password">Password: </label>
+	<input type="password" name="password" id="password" />
+	<br />
+	<button className="button button-primary" type="submit">
+		Login
+	</button>
+</form>
+```
+
+The `submitLoginForm` handler will be called when the form is submitted. For now, let's just prevent the default execution and `console.log` the values:
+
+```js
+function submitLoginForm(e) {
+	e.preventDefault()
+	// get all data of the form
+	const fd = new FormData(e.target)
+	console.log({ email: fd.get("email"), password: fd.get("password") })
+}
+```
+
+Here's how your application should look like:
+
+[Screenshot of the application](https://i.imgur.com/0KRtQTe.png "Screenshot of the application")
+
+**Handling the form on the backend:**
+
+Let's now add an api route to handle the login form. Create the file `pages/api/login.js` and add the below code to it:
+
+```js
+const handler = (req, res) => {
+	function sendError(error) {
+		res.status(400).json({ error })
+	}
+
+	// validate the request body
+	if (typeof req.body !== "object") return sendError("Invalid body")
+	if (typeof req.body.email !== "string" || !req.body.email)
+		return sendError("Please send `email` in body")
+	if (typeof req.body.password !== "string" || !req.body.password)
+		return sendError("Please send `password` in body")
+
+	// do some database magic, none for this demo!
+
+	res.status(200).json({ ok: true })
+}
+
+export default handler
+```
+
+You can notice that I'm not checking any database or anything. This is because we're not using a database in this tutorial, since our main focus is implementing **Speak**Captcha.
+
+Let's now connect the backend to the frontend in the `submitLoginForm` method:
+
+```js
+// don't forget to import useState from react!
+const [isLoggedIn, setLoggedIn] = useState(false)
+
+// don't forget to make it async!
+async function submitLoginForm(e) {
+	e.preventDefault()
+	// get all data of the form
+	const fd = new FormData(e.target)
+	console.log({ email: fd.get("email"), password: fd.get("password") })
+
+	const res = await fetch("/api/login", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ email: fd.get("email"), password: fd.get("password") })
+	})
+	const data = await res.json()
+
+	if (data.error) alert(data.error)
+	// set the isLoggedIn state variable to true so we can update the UI.
+	else setLoggedIn(true)
+}
+```
+
+And finally, let's update the UI to show that the user has logged in:
+
+```jsx
+if (isLoggedIn) {
+	return <>
+		<Head><title>Logged in</title></Head>
+		<h1>You've logged in!</h1>
+	</>
+}
+
+return (
+	// ...
+)
+```
+
+This is how your file should look like:
+
+```jsx
+// pages/index.js
+import Head from "next/head"
+import { useState } from "react"
+
+const Index = () => {
+	const [isLoggedIn, setLoggedIn] = useState(false)
+
+	async function submitLoginForm(e) {
+		e.preventDefault()
+		// get all data of the form
+		const fd = new FormData(e.target)
+		console.log({ email: fd.get("email"), password: fd.get("password") })
+
+		const res = await fetch("/api/login", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				email: fd.get("email"),
+				password: fd.get("password")
+			})
+		})
+		const data = await res.json()
+
+		if (data.error) alert(data.error)
+		// set the isLoggedIn state variable to true so we can update the UI.
+		else setLoggedIn(true)
+	}
+
+	if (isLoggedIn) {
+		return (
+			<>
+				<Head>
+					<title>Logged in</title>
+				</Head>
+				<h1>You've logged in!</h1>
+			</>
+		)
+	}
+
+	return (
+		<>
+			<Head>
+				<title>SpeakCaptcha Test</title>
+			</Head>
+			<h1>SpeakCaptcha Test</h1>
+			<form onSubmit={submitLoginForm} style={{ margin: "1rem" }}>
+				<label htmlFor="email">Email: </label>
+				<input type="email" name="email" id="email" />
+				<label htmlFor="password">Password: </label>
+				<input type="password" name="password" id="password" />
+				<br />
+				<button className="button button-primary" type="submit">
+					Login
+				</button>
+			</form>
+		</>
+	)
+}
+
+export default Index
+```
+
+## Adding **Speak**Captcha
+
+Here's the part everyone's been waiting for: Adding **Speak**Captcha to your application.
+
+It's really easy to do so, you just need to add an `<iframe>` element with the correct URL and listen for messages emmitted by the iframe.
+
+Here's how your `<iframe>` URL should look like:
+
+```plain
+https://speakcaptcha.gq/api/captcha?application_id=YOUR_SPEAKCAPTCHA_APP_ID
+```
+
+**Speak**Captcha allows you to have multiple captchas on one page, and it allows you to add an identifier to each captcha. You can add an identifier by prefixing it with a `#` and appending it to the end of the URL.
+
+Let's say I wanted to add the captcha with the identifier `hello`, my URL would look like this:
+
+```plain
+https://speakcaptcha.gq/api/captcha?application_id=YOUR_SPEAKCAPTCHA_APP_ID#hello
+```
+
+Now that we know how to add a captcha, let's add it to our application.
+
+Let's first add the `<iframe>`. Add this line after the password input:
+
+```jsx
+<iframe
+	// some styling
+	style={{ margin: "0 1rem", width: "100%" }}
+	src={
+		"https://speakcaptcha.gq/api/captcha?application_id=" +
+		process.env.NEXT_PUBLIC_SPEAKCAPTCHA_APP_ID +
+		"#captcha"
+	}
+	// Allow the iframe to use the browser's microphone
+	allow="microphone"
+	// remove border around the iframe
+	frameBorder={0}
+/>
+```
+
+> I've used the word `captcha` as an identifier here.
+
+And now you should see a **Speak**Captcha widget embedded on your webpage!
+
+There's one problem however -- we're still able to submit the form without completing the captcha. To fix this, let's create a state variable that will keep track of the captcha status, and let's enable and disable the button accordingly.
+
+```jsx
+import Head from 'next/head';
+import { useState } from 'react';
+
+const Index = () => {
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isCaptchaSoved, setCaptchaSolved] = useState(false);
+
+  async function submitLoginForm(e) {
+    e.preventDefault();
+    if (!isCaptchaSoved) return alert('Please solve the captcha first!');
+		// ...
+	}
+
+	// ...
+
+	return (
+    <>
+      <Head>
+        <title>SpeakCaptcha Test</title>
+      </Head>
+      <h1>SpeakCaptcha Test</h1>
+      <form onSubmit={submitLoginForm} style={{ margin: '1rem' }}>
+				{/* ... */}
+        <button
+          className={isCaptchaSoved ? 'button button-primary' : 'button'}
+          style={{ cursor: isCaptchaSoved ? 'pointer' : 'not-allowed' }}
+          title={
+            isCaptchaSoved ? 'Submit form' : 'Please solve the captcha first'
+          }
+          disabled={!isCaptchaSoved}
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+    </>
+	)
+```
+
+> I have omitted some parts of the code to make it easier to follow.
+
+Finally, we need to enable the button when the captcha is solved. **Speak**Captcha will send a message to your application from the iframe whenever the captcha is solved, and for some other events. You can learn more about the events **Speak**Captcha emits [here](/documentation/getting-started).
+
+To listen to events emitted by **Speak**Captcha, we need to listen to the `message` event on the `window` object like so:
+
+```js
+window.addEventListener("message", event => {
+	// ...
+})
+```
+
+We must do this once the page loads, and the best way to do that in React is to use the `useEffect` hook.
+
+```js
+import Head from "next/head"
+// Import useEffect
+import { useState, useEffect } from "react"
+
+const Index = () => {
+	const [isLoggedIn, setLoggedIn] = useState(false)
+	const [isCaptchaSoved, setCaptchaSolved] = useState(false)
+
+	function listener(event) {
+		// code to be added later
+	}
+
+	useEffect(() => {
+		window.addEventListener("message", listener)
+
+		// let's de-register the event listener once the page unloads
+		return () => {
+			window.removeEventListener("message", listener)
+		}
+
+		// we want this code to run ONCE when the page loads, so let's add an empty array as the second argument
+	}, [])
+
+	// ...
+}
+```
+
+> Again, I've removed some code to make it easier to follow.
+
+If you're having a hard time understanding the `useEffect` hook, you can read the [React Docs](https://reactjs.org/docs/hooks-effect.html) to learn more.
+
+Now let's check that the message came from the correct captcha, by comparing the identifier, and let's check that the event is `solved`. We can get the data that is sent by **Speak**Captcha by accessing the `event.data` property.
+
+`event.data` is an object that contains these properties:
+
+- `event`: Name of the **Speak**Captcha event. Can be `solved`, `invalid` or `error`.
+- `identifier`: The identifier of the captcha that sent the message.
+- `data`: Any additional data related to the event. This depends on the event that was sent.
+  - When the event is `solved`, the data will be the an object containing the `solution`, `process_token` and `captcha_id`.
+  - For events that raise errors, the data will be the raw response from the backend.
+
+Let's first check that the event is `solved`:
+
+```js
+// add two more state variables
+const [captchaId, setCaptchaId] = useState(null)
+const [processToken, setProcessToken] = useState(null)
+
+function listener(event) {
+	// do some validation to make sure that the message was emitted by SpeakCaptcha.
+	if (typeof event.data !== "object") return
+	if (typeof event.data.event !== "string") return
+	if (typeof event.data.identifier !== "string") return
+
+	// validate the identifier
+	if (event.data.identifier !== "captcha") return
+
+	// we only want to handle the solved event
+	if (event.data.event !== "solved") return
+
+	console.log("🥳 Captcha solved!")
+
+	// set captcha id and process token state variables
+	setCaptchaId(event.data.data.captcha_id)
+	setProcessToken(event.data.data.process_token)
+
+	// enable the login button now
+	setCaptchaSolved(true)
+}
+```
+
+Now that we have handled the solved event and added code to enable the button when the captcha gets solved, we need to call the **Speak**Captcha API and validate the response.
+
+The API route we'll be calling is `/api/captcha/validate`. We need to send it a `POST` request with the `process_token` and `captcha_id` in the body. We also need to send it the application's credentials as a **Basic auth header**.
+
+This code should be run in the backend, since we're going to need the application's secret.
+
+But first, we need to send the `captchaId` and `processToken` to the backend, so we can send it to the **Speak**Captcha API. Update the `submitLoginForm` function like so:
+
+```js
+async function submitLoginForm(e) {
+	e.preventDefault()
+	if (!isCaptchaSoved || !captchaId || !processToken)
+		return alert("Please solve the captcha first!")
+
+	// get all data of the form
+	const fd = new FormData(e.target)
+	console.log({ email: fd.get("email"), password: fd.get("password") })
+
+	const res = await fetch("/api/login", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			email: fd.get("email"),
+			password: fd.get("password"),
+			captcha_id: captchaId,
+			process_token: processToken
+		})
+	})
+	const data = await res.json()
+
+	if (data.error) alert(data.error)
+	// set the isLoggedIn state variable to true so we can update the UI.
+	else setLoggedIn(true)
+}
+```
+
+Now we can write the backend code:
+
+```js
+// pages/api/login.js
+
+// 							don't forget async!
+const handler = async (req, res) => {
+	function sendError(error) {
+		res.status(400).json({ error })
+	}
+
+	// validate the request body
+	if (typeof req.body !== "object") return sendError("Invalid body")
+	if (typeof req.body.email !== "string" || !req.body.email)
+		return sendError("Please send `email` in body")
+	if (typeof req.body.password !== "string" || !req.body.password)
+		return sendError("Please send `password` in body")
+	// NEW CODE ADDED HERE:
+	// check SpeakCaptcha-specific body data
+	if (typeof req.body.process_token !== "string" || !req.body.process_token)
+		return sendError("Please send `process_token` in body")
+	if (typeof req.body.captcha_id !== "string" || !req.body.captcha_id)
+		return sendError("Please send `captcha_id` in body")
+
+	// call SpeakCaptcha's API to validate the captcha response
+	const speakCaptchaResponse = await fetch(
+		"https://speakcaptcha.gq/api/captcha/validate",
+		{
+			headers: {
+				"Content-Type": "application/json",
+				// a Basic auth header is a Base64 encoded version of the username and password like this -- username:password
+				// here, the username is the app id and password is the app secret.
+				Authorization:
+					"Basic " +
+					Buffer.from(
+						`${process.env.NEXT_PUBLIC_SPEAKCAPTCHA_APP_ID}:${process.env.SPEAKCAPTCHA_APP_SECRET}`
+					).toString("base64")
+			},
+			// must be a post request
+			method: "POST",
+			// send in required fields
+			body: JSON.stringify({
+				process_token: req.body.process_token,
+				captcha_id: req.body.captcha_id
+			})
+		}
+	)
+	const data = speakCaptchaResponse
+
+	if (data.error) return sendError(`${data.error}: ${data.error_description}`)
+
+	// Captcha is completely valid! Proceed with the action now.
+
+	// do some database magic, none for this demo!
+
+	res.status(200).json({ ok: true })
+}
+
+export default handler
+```
+
+And that's it! You've implemented **Speak**Captcha in your application.
+
+## Conclusion
+
+That's how easy it is to implement **Speak**Captcha in your application. Here's the live demo of the **Speak**Captcha integration hosted on [StackBlitz](https://stackblitz.com). You will need to add your own credentials by opening the `.env` file, and then the application will work.
+
+[Checkout the demo here](https://stackblitz.com/edit/nextjs-w23wbp?file=README.md "Open in StackBlitz")

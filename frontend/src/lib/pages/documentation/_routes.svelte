@@ -3,10 +3,12 @@ import GettingStarted, {
 	metadata as gettingStartedMetadata
 } from "./getting-started.svx"
 import HTUS, { metadata as htusMetadata } from "./how-to-use-speakcaptcha.svx"
+import Tutorial, { metadata as tutorialMetadata } from "./tutorial.svx"
 
 export const routes = [
 	{ c: HTUS, m: htusMetadata },
-	{ c: GettingStarted, m: gettingStartedMetadata }
+	{ c: GettingStarted, m: gettingStartedMetadata },
+	{ c: Tutorial, m: tutorialMetadata }
 ]
 </script>
 
