@@ -1,11 +1,11 @@
 import os
 from base64 import b64encode
-from captcha.image import ImageCaptcha
-from fastapi import APIRouter, Query, Request, Body, Depends
-from nanoid import generate as nanoid
 from math import floor
 from time import time
 
+from captcha.image import ImageCaptcha
+from fastapi import APIRouter, Query, Request, Body, Depends
+from nanoid import generate as nanoid
 from pydantic import BaseModel
 from requests import post
 
