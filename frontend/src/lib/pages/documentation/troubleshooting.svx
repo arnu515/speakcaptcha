@@ -1,0 +1,29 @@
+---
+title: Troubleshooting
+summary: Troubleshooting problems with <strong>Speak</strong>Captcha
+path: troubleshooting
+---
+
+## For consumers
+
+### Why am I getting an "Enable JavaScript to access this page" error?
+
+**Speak**Captcha uses the latest web technologies to get your microphone and record it right in the browser. For doing this, we need to use JavaScript. If you're blocking **Speak**Captcha from using JavaScript, it can't function.
+
+If you've allowed JavaScript and still see this error, you may need to upgrade your browser.
+
+### How do I speak out the numbers?
+
+You need to say out the numbers you see in the image one-by-one. So for example, if the image shows "134293", you will say "one three four two nine three".
+
+### I am unable to speak out these numbers.
+
+**Speak**Captcha is working on a more accessible method of completing captchas. For now, please check out [the Accessibility page](/accessibility).
+
+---
+
+## For developers
+
+### I am getting a CORS error while trying to validate the captcha
+
+You are supposed to call the `/validate` route in the **BACKEND**, not in the browser. If you call it from a server, you won't get this error. We haven't enabled CORS since we need cookies for authentication.
