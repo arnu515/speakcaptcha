@@ -1,0 +1,9 @@
+.vscode
+.idea
+.env
+__pycache__
+*.pyc
+node_modules
+backend/static/*
+!backend/static/.gitkeep
+dist
