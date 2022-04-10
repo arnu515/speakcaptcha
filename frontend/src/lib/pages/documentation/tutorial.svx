@@ -512,4 +512,4 @@ And that's it! You've implemented **Speak**Captcha in your application.
 
 That's how easy it is to implement **Speak**Captcha in your application. Here's the live demo of the **Speak**Captcha integration hosted on [StackBlitz](https://stackblitz.com). You will need to add your own credentials by opening the `.env` file, and then the application will work.
 
-[Checkout the demo here](https://stackblitz.com/edit/nextjs-w23wbp?file=README.md "Open in StackBlitz")
+[Checkout the demo here](https://stackblitz.com/edit/speakcaptcha-tutorial?file=.env "Open in StackBlitz")
