@@ -246,7 +246,7 @@ It's really easy to do so, you just need to add an `<iframe>` element with the c
 Here's how your `<iframe>` URL should look like:
 
 ```plain
-https://speakcaptcha.gq/api/captcha?application_id=YOUR_SPEAKCAPTCHA_APP_ID
+https://speakcaptcha.tk/api/captcha?application_id=YOUR_SPEAKCAPTCHA_APP_ID
 ```
 
 **Speak**Captcha allows you to have multiple captchas on one page, and it allows you to add an identifier to each captcha. You can add an identifier by prefixing it with a `#` and appending it to the end of the URL.
@@ -254,7 +254,7 @@ https://speakcaptcha.gq/api/captcha?application_id=YOUR_SPEAKCAPTCHA_APP_ID
 Let's say I wanted to add the captcha with the identifier `hello`, my URL would look like this:
 
 ```plain
-https://speakcaptcha.gq/api/captcha?application_id=YOUR_SPEAKCAPTCHA_APP_ID#hello
+https://speakcaptcha.tk/api/captcha?application_id=YOUR_SPEAKCAPTCHA_APP_ID#hello
 ```
 
 Now that we know how to add a captcha, let's add it to our application.
@@ -266,7 +266,7 @@ Let's first add the `<iframe>`. Add this line after the password input:
 	// some styling
 	style={{ margin: "0 1rem", width: "100%" }}
 	src={
-		"https://speakcaptcha.gq/api/captcha?application_id=" +
+		"https://speakcaptcha.tk/api/captcha?application_id=" +
 		process.env.NEXT_PUBLIC_SPEAKCAPTCHA_APP_ID +
 		"#captcha"
 	}
@@ -471,7 +471,7 @@ const handler = async (req, res) => {
 
 	// call SpeakCaptcha's API to validate the captcha response
 	const speakCaptchaResponse = await fetch(
-		"https://speakcaptcha.gq/api/captcha/validate",
+		"https://speakcaptcha.tk/api/captcha/validate",
 		{
 			headers: {
 				"Content-Type": "application/json",

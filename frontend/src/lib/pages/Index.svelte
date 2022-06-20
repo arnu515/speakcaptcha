@@ -48,6 +48,6 @@ import { Link } from "svelte-navigator"
 	</p>
 	<p class="mt-8 mb-4 text-center flex items-center gap-2 text-xl justify-center">
 		<Link to="/documentation" class="button">Read the docs</Link>
-		<a href="https://examples.speakcaptcha.gq" class="button white">View examples</a>
+		<a href="https://examples.speakcaptcha.tk" class="button white">View examples</a>
 	</p>
 </div>

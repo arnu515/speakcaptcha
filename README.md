@@ -1,8 +1,8 @@
-# [SpeakCaptcha](https://speakcaptcha.gq) -- The Captcha that makes you speak out the answer
+# [SpeakCaptcha](https://speakcaptcha.tk) -- The Captcha that makes you speak out the answer
 
-The source code for [SpeakCaptcha](https://speakcaptcha.gq).
+The source code for [SpeakCaptcha](https://speakcaptcha.tk).
 
-Checkout the [documentation](https://speakcaptcha.gq/documentation) for instructions on how to use SpeakCaptcha.
+Checkout the [documentation](https://speakcaptcha.tk/documentation) for instructions on how to use SpeakCaptcha.
 
 ## Local development
 
@@ -47,7 +47,7 @@ DEEPGRAM_KEY_SECRET=api-key-secret
 
 ### Example
 
-Example is hosted live at <https://examples.speakcaptcha.gq>.
+Example is hosted live at <https://examples.speakcaptcha.tk>.
 
 1. `cd` into the `example` folder.
 2. run `yarn install` to install packages.
